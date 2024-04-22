@@ -1,10 +1,9 @@
 import 'package:eight_queen_problem_game/core/constants.dart';
 import 'package:eight_queen_problem_game/features/chess_board/presentation/screens/components/background_image_component.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 class ChessBoardScreen extends HookWidget {
@@ -12,6 +11,8 @@ class ChessBoardScreen extends HookWidget {
   static const String routeName = '/chess-board';
   @override
   Widget build(BuildContext context) {
+    final svgState = useState<SvgPicture?>(null);
+
     return Scaffold(
       body: Stack(
         children: [
@@ -98,32 +99,47 @@ class ChessBoardScreen extends HookWidget {
                           itemCount: Constants.numberOfQueens *
                               Constants.numberOfQueens,
                           itemBuilder: (context, index) {
-                            return Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .secondary),
-                                color: (index % 2 == 0 &&
-                                            index ~/
-                                                    Constants.numberOfQueens %
-                                                    2 ==
-                                                0) ||
-                                        (index % 2 != 0 &&
-                                            index ~/
-                                                    Constants.numberOfQueens %
-                                                    2 !=
-                                                0)
-                                    ? Theme.of(context)
-                                        .colorScheme
-                                        .secondary
-                                        .withOpacity(.4)
-                                    : Theme.of(context)
-                                        .colorScheme
-                                        .background
-                                        .withOpacity(.4),
-                              ),
-                            );
+                            return DragTarget<SvgPicture>(
+                                onAcceptWithDetails: (data) =>
+                                    svgState.value = data.data,
+                                builder: (
+                                  context,
+                                  candidateData,
+                                  rejectedData,
+                                ) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      backgroundBlendMode: BlendMode.overlay,
+                                      border: Border.all(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .secondary
+                                              .withOpacity(.6)),
+                                      color: (index % 2 == 0 &&
+                                                  index ~/
+                                                          Constants
+                                                              .numberOfQueens %
+                                                          2 ==
+                                                      0) ||
+                                              (index % 2 != 0 &&
+                                                  index ~/
+                                                          Constants
+                                                              .numberOfQueens %
+                                                          2 !=
+                                                      0)
+                                          ? Theme.of(context)
+                                              .colorScheme
+                                              .secondary
+                                              .withOpacity(.6)
+                                          : Theme.of(context)
+                                              .colorScheme
+                                              .background
+                                              .withOpacity(.6),
+                                    ),
+                                    child: svgState.value ??
+                                        const SizedBox.shrink(),
+                                  );
+                                });
                           }),
                     ),
                   ),
@@ -141,6 +157,38 @@ class ChessBoardScreen extends HookWidget {
                           .background
                           .withOpacity(.4),
                       borderRadius: BorderRadius.all(Radius.circular(8.sp)),
+                    ),
+                    child: Row(
+                      children: [
+                        Draggable<SvgPicture>(
+                          data: SvgPicture.asset(
+                            Constants.blackQueenSvgPath,
+                            height: 22.sp,
+                            width: 22.sp,
+                          ),
+                          feedback: SvgPicture.asset(
+                            Constants.blackQueenSvgPath,
+                            height: 36.sp,
+                            width: 36.sp,
+                          ),
+                          childWhenDragging: SvgPicture.asset(
+                            Constants.blackQueenSvgPath,
+                            height: 28.sp,
+                            width: 28.sp,
+                            colorFilter: ColorFilter.mode(
+                                Theme.of(context)
+                                    .colorScheme
+                                    .onBackground
+                                    .withAlpha(100),
+                                BlendMode.srcIn),
+                          ),
+                          child: SvgPicture.asset(
+                            Constants.blackQueenSvgPath,
+                            height: 28.sp,
+                            width: 28.sp,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
