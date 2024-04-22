@@ -1,6 +1,7 @@
-import 'package:eight_queen_problem_game/core/game_theme.dart';
-import 'package:eight_queen_problem_game/core/router.dart';
+import 'package:eight_queen_problem_game/utils/game_theme.dart';
+import 'package:eight_queen_problem_game/utils/router.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() {
   runApp(const MainApp());
@@ -11,9 +12,14 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-        title: 'Eight Queen Problem Game',
-        routerConfig: router,
-        theme: GameTheme.getTheme(ThemeType.light));
+    return ScreenUtilInit(
+      designSize: const Size(393, 852),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      child: MaterialApp.router(
+          title: 'Eight Queen Problem Game',
+          routerConfig: router,
+          theme: GameTheme.getTheme(ThemeType.light)),
+    );
   }
 }
