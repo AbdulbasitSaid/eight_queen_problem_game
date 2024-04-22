@@ -1,3 +1,4 @@
+import 'package:eight_queen_problem_game/core/game_theme.dart';
 import 'package:eight_queen_problem_game/core/router.dart';
 import 'package:flutter/material.dart';
 
@@ -11,8 +12,8 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Eight Queen Problem Game',
-      routerConfig: router,
-    );
+        title: 'Eight Queen Problem Game',
+        routerConfig: router,
+        theme: GameTheme.getTheme(ThemeType.light));
   }
 }
