@@ -1,6 +1,8 @@
+import 'package:eight_queen_problem_game/features/chess_board/presentation/cubit/game_board_cubit.dart';
 import 'package:eight_queen_problem_game/utils/game_theme.dart';
 import 'package:eight_queen_problem_game/utils/router.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
@@ -19,10 +21,13 @@ class MainApp extends StatelessWidget {
       designSize: const Size(393, 852),
       minTextAdapt: true,
       splitScreenMode: true,
-      child: MaterialApp.router(
-          title: 'Eight Queen Problem Game',
-          routerConfig: router,
-          theme: GameTheme.getTheme(ThemeType.light)),
+      child: BlocProvider<GameBoardCubit>(
+        create: (context) => GameBoardCubit(),
+        child: MaterialApp.router(
+            title: 'Eight Queen Problem Game',
+            routerConfig: router,
+            theme: GameTheme.getTheme(ThemeType.light)),
+      ),
     );
   }
 }
