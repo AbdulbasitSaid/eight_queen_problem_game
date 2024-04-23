@@ -53,6 +53,15 @@ class QueenInventoryComponent extends StatelessWidget {
                   overflow: TextOverflow.clip,
                 ),
               ),
+
+            if (gameBoardState.isGameCompleted)
+              const Flexible(
+                child: Text(
+                  "Congratulations! You have successfully placed all the Queens👸🏼 on the board without attacking each other.🎉",
+                  softWrap: true,
+                  overflow: TextOverflow.clip,
+                ),
+              ),
           ],
         ),
       );

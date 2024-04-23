@@ -1,3 +1,4 @@
+import 'package:eight_queen_problem_game/features/home/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -20,10 +21,10 @@ class AppBarComponent extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () {
-              context.pop(true);
+              context.goNamed(HomeScreen.routeName);
             },
             icon: const Icon(
-              Icons.cancel,
+              Icons.power_settings_new_rounded,
             ),
             color: Theme.of(context).colorScheme.error.withOpacity(.8),
           ),

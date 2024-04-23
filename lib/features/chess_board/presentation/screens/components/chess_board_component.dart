@@ -1,6 +1,8 @@
 import 'package:eight_queen_problem_game/core/constants.dart';
 import 'package:eight_queen_problem_game/features/chess_board/presentation/cubit/game_board_cubit.dart';
 import 'package:eight_queen_problem_game/features/chess_board/presentation/screens/components/draggable_queen_component.dart';
+import 'package:eight_queen_problem_game/features/chess_board/presentation/screens/components/playing_state_cell.dart';
+import 'package:eight_queen_problem_game/features/chess_board/presentation/screens/components/winning_state_cell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -50,41 +52,10 @@ class ChessBoardComponent extends StatelessWidget {
                 candidateData,
                 rejectedData,
               ) {
-                return Container(
-                  decoration: BoxDecoration(
-                    backgroundBlendMode: BlendMode.overlay,
-                    border: Border.all(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .secondary
-                            .withOpacity(.6)),
-                    color: gameBoardState.attackingQueenPosition == null ||
-                            gameBoardState.attackingQueenPosition!['row'] !=
-                                row ||
-                            gameBoardState.attackingQueenPosition!['col'] != col
-                        ? (row + col) % 2 == 0
-                            ? Theme.of(context)
-                                .colorScheme
-                                .secondary
-                                .withOpacity(.6)
-                            : Theme.of(context)
-                                .colorScheme
-                                .background
-                                .withOpacity(.6)
-                        : Theme.of(context).colorScheme.error.withOpacity(.6),
-                  ),
-                  child: gameBoardState.board[row][col] == 1
-                      ? DraggableQueenComponent(
-                          dragTargetModel: DragTargetModel(
-                            dragType: DragTargetType.board,
-                            previousPosition: {
-                              'row': row,
-                              'col': col,
-                            },
-                          ),
-                        )
-                      : null,
-                );
+                return gameBoardState.isGameCompleted
+                    ? WinningStateCell(row: row, col: col)
+                    : PlayingStateCell(
+                        gameBoardState: gameBoardState, row: row, col: col);
               });
             }),
       ),

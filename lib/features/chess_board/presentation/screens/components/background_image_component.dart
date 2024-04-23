@@ -10,6 +10,9 @@ class BackgroundImageComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Image(
+      // add tint color to the background image
+      color: Colors.black.withOpacity(.4),
+      colorBlendMode: BlendMode.darken,
       height: ScreenUtil().screenHeight,
       width: ScreenUtil().screenWidth,
       fit: BoxFit.cover,
@@ -19,7 +22,7 @@ class BackgroundImageComponent extends StatelessWidget {
               : const Center(
                   child: CircularProgressIndicator(),
                 ),
-      image: AssetImage(Constants.backgroundImages[0]),
+      image: AssetImage(Constants.backgroundImages[1]),
     );
   }
 }
