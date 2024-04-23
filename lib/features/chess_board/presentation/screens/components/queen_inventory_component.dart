@@ -13,19 +13,20 @@ class QueenInventoryComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gameBoardState = context.watch<GameBoardCubit>().state;
+
     return DragTarget<DragTargetModel>(onAcceptWithDetails: (data) {
       if (data.data.previousPosition!['row'] == null ||
           data.data.previousPosition!['col'] == null ||
           gameBoardState.attackingQueenPosition != null) {
         return;
       }
+
       context.read<GameBoardCubit>().removeQueen(
           row: data.data.previousPosition!['row']!,
           col: data.data.previousPosition!['col']!);
     }, builder: (context, candidateData, rejectedData) {
       return Container(
         padding: EdgeInsets.all(12.sp),
-        height: 100.sp,
         width: ScreenUtil().screenWidth,
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.background.withOpacity(.4),
@@ -45,7 +46,13 @@ class QueenInventoryComponent extends StatelessWidget {
                 ),
               )
             else
-              const Text("Under attack and, you can't place more queens."),
+              Flexible(
+                child: Text(
+                  "👑 at row:${gameBoardState.attackingQueenPosition!["row"]}, column:${gameBoardState.attackingQueenPosition!["col"]} is attacking poor 👸🏼. You can't place more queens. To continue, make sure no Queens👸🏼 are attacked on the board.😊",
+                  softWrap: true,
+                  overflow: TextOverflow.clip,
+                ),
+              ),
           ],
         ),
       );

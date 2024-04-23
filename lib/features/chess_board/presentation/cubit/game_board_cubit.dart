@@ -18,7 +18,7 @@ class GameBoardCubit extends Cubit<BoardModel> {
             isGameCompleted: false,
           ),
         );
-  // place a queen on the board
+
   void placeQueenOnBoard({
     required int row,
     required int col,
@@ -42,7 +42,7 @@ class GameBoardCubit extends Cubit<BoardModel> {
           attackingQueenPosition: isMoveSafe.attackingQueenPosition,
           isGameCompleted: state.isGameCompleted),
     );
-    // if the board is full, then the game is completed
+
     if (state.remainingQueensCount == 0 && state.isSafe) {
       emit(
         BoardModel(
@@ -63,7 +63,6 @@ class GameBoardCubit extends Cubit<BoardModel> {
     required int newRow,
     required int newCol,
   }) {
-    // if the new position is equals 1 then do nothing
     if (state.board[newRow][newCol] == 1) {
       return;
     }
@@ -103,14 +102,7 @@ class GameBoardCubit extends Cubit<BoardModel> {
     );
   }
 
-  void showAttackingQueenPosition({
-    required int row,
-    required int col,
-  }) {}
-
   SafeCheckModel _isSafe(List<List<int>> board, int row, int col) {
-// check if there is a queen in the same row to the
-    // right
     for (int i = 0; i < col; i++) {
       if (board[row][i] == 1) {
         return SafeCheckModel(isSafe: false, attackingQueenPosition: {
@@ -119,8 +111,7 @@ class GameBoardCubit extends Cubit<BoardModel> {
         });
       }
     }
-    // check if there is a queen in the same row to the
-    // left
+
     for (int i = col; i < Constants.numberOfQueens; i++) {
       if (board[row][i] == 1) {
         return SafeCheckModel(isSafe: false, attackingQueenPosition: {
@@ -130,8 +121,6 @@ class GameBoardCubit extends Cubit<BoardModel> {
       }
     }
 
-    // check if there is a queen in the same column
-    // below
     for (int i = 0; i < row; i++) {
       if (board[i][col] == 1) {
         return SafeCheckModel(isSafe: false, attackingQueenPosition: {
@@ -140,8 +129,7 @@ class GameBoardCubit extends Cubit<BoardModel> {
         });
       }
     }
-    // check if there is a queen in the same column
-    // above
+
     for (int i = row; i < Constants.numberOfQueens; i++) {
       if (board[i][col] == 1) {
         return SafeCheckModel(isSafe: false, attackingQueenPosition: {
@@ -151,8 +139,6 @@ class GameBoardCubit extends Cubit<BoardModel> {
       }
     }
 
-    // check if there is a queen in the lower right
-    // diagonal
     for (int i = row, j = col; i >= 0 && j >= 0; i--, j--) {
       if (board[i][j] == 1) {
         return SafeCheckModel(isSafe: false, attackingQueenPosition: {
@@ -161,8 +147,7 @@ class GameBoardCubit extends Cubit<BoardModel> {
         });
       }
     }
-    // check if there is a queen in the upper left
-    // diagonal
+
     for (int i = row, j = col;
         i < Constants.numberOfQueens && j < Constants.numberOfQueens;
         i++, j++) {
@@ -173,8 +158,7 @@ class GameBoardCubit extends Cubit<BoardModel> {
         });
       }
     }
-    // check if there is a queen in the lower left
-    // diagonal
+
     for (int i = row, j = col;
         i >= 0 && j < Constants.numberOfQueens;
         i--, j++) {
@@ -185,8 +169,7 @@ class GameBoardCubit extends Cubit<BoardModel> {
         });
       }
     }
-    // check if there is a queen in the upper right
-    // diagonal
+
     for (int i = row, j = col;
         i < Constants.numberOfQueens && j >= 0;
         i++, j--) {
@@ -198,8 +181,6 @@ class GameBoardCubit extends Cubit<BoardModel> {
       }
     }
 
-    // if there is no queen in any of the above
-    // positions, then it is safe to place a queen
     return const SafeCheckModel(isSafe: true, attackingQueenPosition: null);
   }
 }

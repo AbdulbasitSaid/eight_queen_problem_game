@@ -28,8 +28,8 @@ class AppBarComponent extends StatelessWidget {
             color: Theme.of(context).colorScheme.error.withOpacity(.8),
           ),
           Text(
-            'Chess Board',
-            style: Theme.of(context).textTheme.titleLarge,
+            '8 Queens Problem Game',
+            style: Theme.of(context).textTheme.labelMedium,
           ),
         ],
       ),
