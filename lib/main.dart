@@ -27,9 +27,10 @@ class MainApp extends StatelessWidget {
       child: BlocProvider<GameBoardCubit>(
         create: (context) => GameBoardCubit(),
         child: MaterialApp.router(
-            title: 'Eight Queen Problem Game',
-            routerConfig: router,
-            theme: GameTheme.getTheme(ThemeType.light)),
+          title: 'Eight Queen Problem Game',
+          routerConfig: router,
+          theme: GameTheme.getTheme(ThemeType.light),
+        ),
       ),
     );
   }
