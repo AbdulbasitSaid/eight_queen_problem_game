@@ -7,15 +7,17 @@ GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: HomeScreen.routeName,
+      name: HomeScreen.routeName,
       pageBuilder: (context, state) => const MaterialPage(child: HomeScreen()),
     ),
     GoRoute(
       path: ChessBoardScreen.routeName,
+      name: ChessBoardScreen.routeName,
       pageBuilder: (context, state) =>
           const MaterialPage(child: ChessBoardScreen()),
     ),
   ],
-  initialLocation: '/chess-board',
+  initialLocation: '/',
   restorationScopeId: HomeScreen.routeName,
   errorPageBuilder: (context, state) => MaterialPage(
     child: Scaffold(
