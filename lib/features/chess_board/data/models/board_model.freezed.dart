@@ -17,10 +17,12 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$BoardModel {
   List<List<int>> get board => throw _privateConstructorUsedError;
-  int get placesQueensCount => throw _privateConstructorUsedError;
+  int get remainingQueensCount => throw _privateConstructorUsedError;
   int get size => throw _privateConstructorUsedError;
   bool get isSafe => throw _privateConstructorUsedError;
   bool get isGameCompleted => throw _privateConstructorUsedError;
+  Map<String, int>? get attackingQueenPosition =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $BoardModelCopyWith<BoardModel> get copyWith =>
@@ -35,10 +37,11 @@ abstract class $BoardModelCopyWith<$Res> {
   @useResult
   $Res call(
       {List<List<int>> board,
-      int placesQueensCount,
+      int remainingQueensCount,
       int size,
       bool isSafe,
-      bool isGameCompleted});
+      bool isGameCompleted,
+      Map<String, int>? attackingQueenPosition});
 }
 
 /// @nodoc
@@ -55,19 +58,20 @@ class _$BoardModelCopyWithImpl<$Res, $Val extends BoardModel>
   @override
   $Res call({
     Object? board = null,
-    Object? placesQueensCount = null,
+    Object? remainingQueensCount = null,
     Object? size = null,
     Object? isSafe = null,
     Object? isGameCompleted = null,
+    Object? attackingQueenPosition = freezed,
   }) {
     return _then(_value.copyWith(
       board: null == board
           ? _value.board
           : board // ignore: cast_nullable_to_non_nullable
               as List<List<int>>,
-      placesQueensCount: null == placesQueensCount
-          ? _value.placesQueensCount
-          : placesQueensCount // ignore: cast_nullable_to_non_nullable
+      remainingQueensCount: null == remainingQueensCount
+          ? _value.remainingQueensCount
+          : remainingQueensCount // ignore: cast_nullable_to_non_nullable
               as int,
       size: null == size
           ? _value.size
@@ -81,6 +85,10 @@ class _$BoardModelCopyWithImpl<$Res, $Val extends BoardModel>
           ? _value.isGameCompleted
           : isGameCompleted // ignore: cast_nullable_to_non_nullable
               as bool,
+      attackingQueenPosition: freezed == attackingQueenPosition
+          ? _value.attackingQueenPosition
+          : attackingQueenPosition // ignore: cast_nullable_to_non_nullable
+              as Map<String, int>?,
     ) as $Val);
   }
 }
@@ -95,10 +103,11 @@ abstract class _$$BoardModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {List<List<int>> board,
-      int placesQueensCount,
+      int remainingQueensCount,
       int size,
       bool isSafe,
-      bool isGameCompleted});
+      bool isGameCompleted,
+      Map<String, int>? attackingQueenPosition});
 }
 
 /// @nodoc
@@ -113,19 +122,20 @@ class __$$BoardModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? board = null,
-    Object? placesQueensCount = null,
+    Object? remainingQueensCount = null,
     Object? size = null,
     Object? isSafe = null,
     Object? isGameCompleted = null,
+    Object? attackingQueenPosition = freezed,
   }) {
     return _then(_$BoardModelImpl(
       board: null == board
           ? _value._board
           : board // ignore: cast_nullable_to_non_nullable
               as List<List<int>>,
-      placesQueensCount: null == placesQueensCount
-          ? _value.placesQueensCount
-          : placesQueensCount // ignore: cast_nullable_to_non_nullable
+      remainingQueensCount: null == remainingQueensCount
+          ? _value.remainingQueensCount
+          : remainingQueensCount // ignore: cast_nullable_to_non_nullable
               as int,
       size: null == size
           ? _value.size
@@ -139,6 +149,10 @@ class __$$BoardModelImplCopyWithImpl<$Res>
           ? _value.isGameCompleted
           : isGameCompleted // ignore: cast_nullable_to_non_nullable
               as bool,
+      attackingQueenPosition: freezed == attackingQueenPosition
+          ? _value._attackingQueenPosition
+          : attackingQueenPosition // ignore: cast_nullable_to_non_nullable
+              as Map<String, int>?,
     ));
   }
 }
@@ -148,11 +162,13 @@ class __$$BoardModelImplCopyWithImpl<$Res>
 class _$BoardModelImpl implements _BoardModel {
   const _$BoardModelImpl(
       {required final List<List<int>> board,
-      required this.placesQueensCount,
+      required this.remainingQueensCount,
       required this.size,
       required this.isSafe,
-      required this.isGameCompleted})
-      : _board = board;
+      required this.isGameCompleted,
+      final Map<String, int>? attackingQueenPosition})
+      : _board = board,
+        _attackingQueenPosition = attackingQueenPosition;
 
   final List<List<int>> _board;
   @override
@@ -163,17 +179,27 @@ class _$BoardModelImpl implements _BoardModel {
   }
 
   @override
-  final int placesQueensCount;
+  final int remainingQueensCount;
   @override
   final int size;
   @override
   final bool isSafe;
   @override
   final bool isGameCompleted;
+  final Map<String, int>? _attackingQueenPosition;
+  @override
+  Map<String, int>? get attackingQueenPosition {
+    final value = _attackingQueenPosition;
+    if (value == null) return null;
+    if (_attackingQueenPosition is EqualUnmodifiableMapView)
+      return _attackingQueenPosition;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
+  }
 
   @override
   String toString() {
-    return 'BoardModel(board: $board, placesQueensCount: $placesQueensCount, size: $size, isSafe: $isSafe, isGameCompleted: $isGameCompleted)';
+    return 'BoardModel(board: $board, remainingQueensCount: $remainingQueensCount, size: $size, isSafe: $isSafe, isGameCompleted: $isGameCompleted, attackingQueenPosition: $attackingQueenPosition)';
   }
 
   @override
@@ -182,22 +208,25 @@ class _$BoardModelImpl implements _BoardModel {
         (other.runtimeType == runtimeType &&
             other is _$BoardModelImpl &&
             const DeepCollectionEquality().equals(other._board, _board) &&
-            (identical(other.placesQueensCount, placesQueensCount) ||
-                other.placesQueensCount == placesQueensCount) &&
+            (identical(other.remainingQueensCount, remainingQueensCount) ||
+                other.remainingQueensCount == remainingQueensCount) &&
             (identical(other.size, size) || other.size == size) &&
             (identical(other.isSafe, isSafe) || other.isSafe == isSafe) &&
             (identical(other.isGameCompleted, isGameCompleted) ||
-                other.isGameCompleted == isGameCompleted));
+                other.isGameCompleted == isGameCompleted) &&
+            const DeepCollectionEquality().equals(
+                other._attackingQueenPosition, _attackingQueenPosition));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_board),
-      placesQueensCount,
+      remainingQueensCount,
       size,
       isSafe,
-      isGameCompleted);
+      isGameCompleted,
+      const DeepCollectionEquality().hash(_attackingQueenPosition));
 
   @JsonKey(ignore: true)
   @override
@@ -209,21 +238,24 @@ class _$BoardModelImpl implements _BoardModel {
 abstract class _BoardModel implements BoardModel {
   const factory _BoardModel(
       {required final List<List<int>> board,
-      required final int placesQueensCount,
+      required final int remainingQueensCount,
       required final int size,
       required final bool isSafe,
-      required final bool isGameCompleted}) = _$BoardModelImpl;
+      required final bool isGameCompleted,
+      final Map<String, int>? attackingQueenPosition}) = _$BoardModelImpl;
 
   @override
   List<List<int>> get board;
   @override
-  int get placesQueensCount;
+  int get remainingQueensCount;
   @override
   int get size;
   @override
   bool get isSafe;
   @override
   bool get isGameCompleted;
+  @override
+  Map<String, int>? get attackingQueenPosition;
   @override
   @JsonKey(ignore: true)
   _$$BoardModelImplCopyWith<_$BoardModelImpl> get copyWith =>

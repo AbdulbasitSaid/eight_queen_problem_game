@@ -1,7 +1,9 @@
-
-import 'package:eight_queen_problem_game/features/chess_board/presentation/screens/components/queen_compenent.dart';
+import 'package:eight_queen_problem_game/features/chess_board/presentation/cubit/game_board_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'draggable_queen_component.dart';
 
 class QueenInventoryComponent extends StatelessWidget {
   const QueenInventoryComponent({
@@ -10,28 +12,43 @@ class QueenInventoryComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(12.sp),
-      height: 100.sp,
-      width: ScreenUtil().screenWidth,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.background.withOpacity(.4),
-        borderRadius: BorderRadius.all(Radius.circular(8.sp)),
-      ),
-      child: Row(
-        children: [
-          Draggable<int>(
-            data: 1,
-            feedback: const QueenComponent(size: 26),
-            childWhenDragging: QueenComponent(
-              colorFilter: ColorFilter.mode(
-                  Theme.of(context).colorScheme.onBackground.withAlpha(100),
-                  BlendMode.srcIn),
-            ),
-            child: const QueenComponent(),
-          ),
-        ],
-      ),
-    );
+    final gameBoardState = context.watch<GameBoardCubit>().state;
+    return DragTarget<DragTargetModel>(onAcceptWithDetails: (data) {
+      if (data.data.previousPosition!['row'] == null ||
+          data.data.previousPosition!['col'] == null ||
+          gameBoardState.attackingQueenPosition != null) {
+        return;
+      }
+      context.read<GameBoardCubit>().removeQueen(
+          row: data.data.previousPosition!['row']!,
+          col: data.data.previousPosition!['col']!);
+    }, builder: (context, candidateData, rejectedData) {
+      return Container(
+        padding: EdgeInsets.all(12.sp),
+        height: 100.sp,
+        width: ScreenUtil().screenWidth,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background.withOpacity(.4),
+          borderRadius: BorderRadius.all(Radius.circular(8.sp)),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            // if gameBoardState.isSafe return a DraggableQueenComponent else return a Container
+            if (gameBoardState.isSafe)
+              ...List.generate(
+                gameBoardState.remainingQueensCount,
+                (index) => const DraggableQueenComponent(
+                  dragTargetModel: DragTargetModel(
+                    dragType: DragTargetType.inventory,
+                  ),
+                ),
+              )
+            else
+              const Text("Under attack and, you can't place more queens."),
+          ],
+        ),
+      );
+    });
   }
 }

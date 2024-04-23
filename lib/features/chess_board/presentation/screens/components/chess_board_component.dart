@@ -1,5 +1,8 @@
 import 'package:eight_queen_problem_game/core/constants.dart';
+import 'package:eight_queen_problem_game/features/chess_board/presentation/cubit/game_board_cubit.dart';
+import 'package:eight_queen_problem_game/features/chess_board/presentation/screens/components/draggable_queen_component.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChessBoardComponent extends StatelessWidget {
@@ -9,6 +12,7 @@ class ChessBoardComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final gameBoardState = context.watch<GameBoardCubit>().state;
     return Container(
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
@@ -26,7 +30,22 @@ class ChessBoardComponent extends StatelessWidget {
             ),
             itemCount: Constants.numberOfQueens * Constants.numberOfQueens,
             itemBuilder: (context, index) {
-              return DragTarget<int>(builder: (
+              int row = index ~/ Constants.numberOfQueens;
+              int col = index % Constants.numberOfQueens;
+              return DragTarget<DragTargetModel>(onAcceptWithDetails: (data) {
+                if (data.data.dragType == DragTargetType.inventory) {
+                  context
+                      .read<GameBoardCubit>()
+                      .placeQueenOnBoard(row: row, col: col);
+                } else if (data.data.dragType == DragTargetType.board) {
+                  context.read<GameBoardCubit>().moveQueen(
+                        row: data.data.previousPosition!['row']!,
+                        col: data.data.previousPosition!['col']!,
+                        newRow: row,
+                        newCol: col,
+                      );
+                }
+              }, builder: (
                 context,
                 candidateData,
                 rejectedData,
@@ -39,19 +58,32 @@ class ChessBoardComponent extends StatelessWidget {
                             .colorScheme
                             .secondary
                             .withOpacity(.6)),
-                    color: (index % 2 == 0 &&
-                                index ~/ Constants.numberOfQueens % 2 == 0) ||
-                            (index % 2 != 0 &&
-                                index ~/ Constants.numberOfQueens % 2 != 0)
-                        ? Theme.of(context)
-                            .colorScheme
-                            .secondary
-                            .withOpacity(.6)
-                        : Theme.of(context)
-                            .colorScheme
-                            .background
-                            .withOpacity(.6),
+                    color: gameBoardState.attackingQueenPosition == null ||
+                            gameBoardState.attackingQueenPosition!['row'] !=
+                                row ||
+                            gameBoardState.attackingQueenPosition!['col'] != col
+                        ? (row + col) % 2 == 0
+                            ? Theme.of(context)
+                                .colorScheme
+                                .secondary
+                                .withOpacity(.6)
+                            : Theme.of(context)
+                                .colorScheme
+                                .background
+                                .withOpacity(.6)
+                        : Theme.of(context).colorScheme.error.withOpacity(.6),
                   ),
+                  child: gameBoardState.board[row][col] == 1
+                      ? DraggableQueenComponent(
+                          dragTargetModel: DragTargetModel(
+                            dragType: DragTargetType.board,
+                            previousPosition: {
+                              'row': row,
+                              'col': col,
+                            },
+                          ),
+                        )
+                      : null,
                 );
               });
             }),
