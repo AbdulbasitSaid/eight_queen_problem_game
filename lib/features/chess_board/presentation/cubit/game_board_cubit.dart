@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:math';
 
 import 'package:eight_queen_problem_game/core/constants.dart';
