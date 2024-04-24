@@ -240,7 +240,8 @@ class CurrentGameCard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: gameState.size == 0
+        children: gameState.size == 0 ||
+                gameState.size == Constants.numberOfQueens
             ? [
                 Text(
                   'No game in progress',
