@@ -36,6 +36,35 @@ Follow these steps to get the app running on your local machine:
    cd eight_queen_problem_game
    ```
 
+3. Initialize project
+    if on mac on linux and can use Makefiles
+
+     ```bash
+     make init
+     ```
+
+     else run
+
+    ```bash
+     flutter pub get
+    ```
+
+    this above command will install all packages
+
+4. Run the build runner to generate need code.
+
+     if on mac on linux and can use Makefiles
+
+     ```bash
+    make build_runner
+     ```
+
+     else run
+        ```bash
+        dart run build_runner watch --delete-conflicting-outputs
+        ```
+    The above should generate your code.
+
 ### Run the App
 
 To run the app in a development environment, follow these steps:
