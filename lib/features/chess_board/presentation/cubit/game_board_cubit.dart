@@ -214,4 +214,18 @@ class GameBoardCubit extends Cubit<BoardModel> {
     var randomIndex = Random().nextInt(solutions.length);
     return solutions[randomIndex][0];
   }
+
+  // pick first N positions from the solution
+  List<Map<String, int>> _pickNPositions(BoardModel solution, int n) {
+    List<Map<String, int>> positions = [];
+    // add first n positions to the list
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < Constants.numberOfQueens; j++) {
+        if (solution.board[i][j] == 1) {
+          positions.add({'row': i, 'col': j});
+        }
+      }
+    }
+    return positions;
+  }
 }
