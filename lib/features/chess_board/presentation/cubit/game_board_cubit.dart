@@ -32,7 +32,7 @@ class GameBoardCubit extends Cubit<BoardModel> {
     if (board[row][col] == 1) {
       return;
     }
-    checkIsSave(row: row, col: col);
+    checkIsSafe(row: row, col: col);
 
     board[row][col] = 1;
     emit(
@@ -65,15 +65,8 @@ class GameBoardCubit extends Cubit<BoardModel> {
     required int newRow,
     required int newCol,
   }) {
-    if (state.board[newRow][newCol] == 1) {
-      return;
-    }
-    print('Moving queen from $row, $col to $newRow, $newCol');
-    // Remove the queen from the current position is not same as attacking queen
-    if (state.isSafe == false &&
-        row != state.attackingQueenPosition!['row'] &&
-        col != state.attackingQueenPosition!['col']) {
-      return;
+    if (state.board[newRow][newCol] == 1 || state.board[row][col] == 0) {
+      return; // Ensuring the operation is valid
     }
     removeQueen(row: row, col: col);
     placeQueenOnBoard(row: newRow, col: newCol);
@@ -86,7 +79,7 @@ class GameBoardCubit extends Cubit<BoardModel> {
           Constants.numberOfQueens,
           (_) => List.filled(Constants.numberOfQueens, 0),
         ),
-        remainingQueensCount: 8,
+        remainingQueensCount: Constants.numberOfQueens,
         size: 0,
         isSafe: true,
         isGameCompleted: false,
@@ -94,28 +87,7 @@ class GameBoardCubit extends Cubit<BoardModel> {
     );
   }
 
-  // void checkIsSave({
-  //   required int row,
-  //   required int col,
-  // }) {
-  //   final List<List<int>> board = state.board;
-
-  //   final updatedState = state.copyWith(
-  //     isSafe: _isSafe(board, row, col).isSafe,
-  //     attackingQueenPosition: _isSafe(board, row, col).attackingQueenPosition,
-  //   );
-  //   emit(
-  //     BoardModel(
-  //       board: board,
-  //       remainingQueensCount: state.remainingQueensCount,
-  //       size: state.size,
-  //       isSafe: updatedState.isSafe,
-  //       attackingQueenPosition: updatedState.attackingQueenPosition,
-  //       isGameCompleted: state.isGameCompleted,
-  //     ),
-  //   );
-  // }
-   void checkIsSafe({
+  void checkIsSafe({
     required int row,
     required int col,
   }) {
@@ -129,7 +101,6 @@ class GameBoardCubit extends Cubit<BoardModel> {
 
     emit(updatedState);
   }
-
 
   void removeQueen({
     required int row,
@@ -151,7 +122,7 @@ class GameBoardCubit extends Cubit<BoardModel> {
         isGameCompleted: false,
       ),
     );
-    checkIsSafe( row: row, col: col);
+    checkIsSafe(row: row, col: col);
   }
 
   SafeCheckModel _isSafe(List<List<int>> board, int row, int col) {
