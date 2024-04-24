@@ -135,7 +135,7 @@ class GameBoardCubit extends Cubit<BoardModel> {
     for (int i = 0; i < Constants.numberOfQueens; i++) {
       if (i != col && board[row][i] == 1) {
         return SafeCheckModel(
-            isSafe: false, attackingQueenPosition: {'row': row, 'col': i});
+            isSafe: false, attackingQueenPosition: {'row': row, 'col': col});
       }
     }
 
@@ -143,7 +143,7 @@ class GameBoardCubit extends Cubit<BoardModel> {
     for (int i = 0; i < Constants.numberOfQueens; i++) {
       if (i != row && board[i][col] == 1) {
         return SafeCheckModel(
-            isSafe: false, attackingQueenPosition: {'row': i, 'col': col});
+            isSafe: false, attackingQueenPosition: {'row': row, 'col': col});
       }
     }
 
@@ -163,7 +163,8 @@ class GameBoardCubit extends Cubit<BoardModel> {
               y < Constants.numberOfQueens &&
               board[x][y] == 1) {
             return SafeCheckModel(
-                isSafe: false, attackingQueenPosition: {'row': x, 'col': y});
+                isSafe: false,
+                attackingQueenPosition: {'row': row, 'col': col});
           }
         }
       }
