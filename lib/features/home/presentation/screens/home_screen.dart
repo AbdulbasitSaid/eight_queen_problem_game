@@ -50,264 +50,266 @@ class HomeScreen extends HookWidget {
                     height: 12.sp,
                   ),
                   // Start new game container
-                  Container(
-                    padding: EdgeInsets.all(12.sp),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .background
-                          .withOpacity(.4),
-                      borderRadius: BorderRadius.all(Radius.circular(8.sp)),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          'Start New Game',
-                          style: Theme.of(context).textTheme.titleMedium,
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(
-                          height: 12.sp,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(12.sp),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .background
-                                    .withOpacity(.4),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8.sp)),
-                              ),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    'Play with hints',
-                                    style:
-                                        Theme.of(context).textTheme.titleSmall,
-                                  ),
-                                  SizedBox(
-                                    height: 12.sp,
-                                  ),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Theme.of(context)
-                                          .colorScheme
-                                          .primary
-                                          .withOpacity(.8),
-                                    ),
-                                    onPressed: () {
-                                      context
-                                          .goNamed(ChessBoardScreen.routeName);
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Icon(
-                                          Icons.play_arrow_rounded,
-                                          size: 18.sp,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onPrimary,
-                                        ),
-                                        Text(
-                                          "Play",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .labelMedium!
-                                              .copyWith(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onPrimary,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Text(
-                              ' or ',
-                              style: Theme.of(context).textTheme.titleLarge,
-                            ),
-                            Container(
-                              padding: EdgeInsets.all(12.sp),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .background
-                                    .withOpacity(.4),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8.sp)),
-                              ),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    'Play without hints',
-                                    style:
-                                        Theme.of(context).textTheme.titleSmall,
-                                  ),
-                                  SizedBox(
-                                    height: 12.sp,
-                                  ),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Theme.of(context)
-                                          .colorScheme
-                                          .secondary
-                                          .withOpacity(.8),
-                                    ),
-                                    onPressed: () {
-                                      context
-                                          .read<GameBoardCubit>()
-                                          .resetBoard();
-                                      context
-                                          .goNamed(ChessBoardScreen.routeName);
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Icon(
-                                          Icons.play_arrow_rounded,
-                                          size: 18.sp,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onPrimary,
-                                        ),
-                                        Text(
-                                          "Play",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .labelMedium!
-                                              .copyWith(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onPrimary,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        // play with hints card container
-                        SizedBox(
-                          height: 12.sp,
-                        ),
-                      ],
-                    ),
-                  ),
+                  CurrentGameCard(gameState: gameState),
                   SizedBox(
                     height: 12.sp,
                   ),
-                  // Continue game container
-                  Container(
-                    padding: EdgeInsets.all(12.sp),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .background
-                          .withOpacity(.4),
-                      borderRadius: BorderRadius.all(Radius.circular(8.sp)),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Current Game',
-                          style: Theme.of(context).textTheme.titleMedium,
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(
-                          height: 12.sp,
-                        ),
-                        // game progress
-                        BlocBuilder<GameBoardCubit, BoardModel>(
-                          builder: (context, state) {
-                            return LinearProgressIndicator(
-                              minHeight: 12.sp,
-                              value: (state.size / Constants.numberOfQueens),
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                Theme.of(context)
-                                    .colorScheme
-                                    .primary
-                                    .withOpacity(.8),
-                              ),
-                              backgroundColor: Theme.of(context)
-                                  .colorScheme
-                                  .background
-                                  .withOpacity(.4),
-                            );
-                          },
-                        ),
-                        SizedBox(
-                          height: 12.sp,
-                        ),
-                        // number of queens placed
-                        Text('Queens placed: ${gameState.size}',
-                            style: Theme.of(context).textTheme.titleMedium),
-                        SizedBox(
-                          height: 12.sp,
-                        ),
-                        // continue game button
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Theme.of(context)
-                                    .colorScheme
-                                    .primary
-                                    .withOpacity(.8),
-                              ),
-                              onPressed: () {
-                                context.goNamed(ChessBoardScreen.routeName);
-                              },
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Icon(
-                                    Icons.play_arrow_rounded,
-                                    size: 18.sp,
-                                    color:
-                                        Theme.of(context).colorScheme.onPrimary,
-                                  ),
-                                  Text(
-                                    "Continue",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelMedium!
-                                        .copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onPrimary,
-                                        ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                  const StartNewGameCard(),
                 ],
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class StartNewGameCard extends StatelessWidget {
+  const StartNewGameCard({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(12.sp),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.background.withOpacity(.4),
+        borderRadius: BorderRadius.all(Radius.circular(8.sp)),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            'Start New Game',
+            style: Theme.of(context).textTheme.titleMedium,
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(
+            height: 12.sp,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: EdgeInsets.all(12.sp),
+                decoration: BoxDecoration(
+                  color:
+                      Theme.of(context).colorScheme.background.withOpacity(.4),
+                  borderRadius: BorderRadius.all(Radius.circular(8.sp)),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      'Play with hints',
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    SizedBox(
+                      height: 12.sp,
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withOpacity(.8),
+                      ),
+                      onPressed: () {
+                        context.goNamed(ChessBoardScreen.routeName);
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(
+                            Icons.play_arrow_rounded,
+                            size: 18.sp,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                          Text(
+                            "Play",
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium!
+                                .copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Text(
+                ' or ',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              Container(
+                padding: EdgeInsets.all(12.sp),
+                decoration: BoxDecoration(
+                  color:
+                      Theme.of(context).colorScheme.background.withOpacity(.4),
+                  borderRadius: BorderRadius.all(Radius.circular(8.sp)),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      'Play without hints',
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    SizedBox(
+                      height: 12.sp,
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context)
+                            .colorScheme
+                            .secondary
+                            .withOpacity(.8),
+                      ),
+                      onPressed: () {
+                        context.read<GameBoardCubit>().resetBoard();
+                        context.goNamed(ChessBoardScreen.routeName);
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(
+                            Icons.play_arrow_rounded,
+                            size: 18.sp,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                          Text(
+                            "Play",
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium!
+                                .copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          // play with hints card container
+          SizedBox(
+            height: 12.sp,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CurrentGameCard extends StatelessWidget {
+  const CurrentGameCard({
+    super.key,
+    required this.gameState,
+  });
+
+  final BoardModel gameState;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(12.sp),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.background.withOpacity(.4),
+        borderRadius: BorderRadius.all(Radius.circular(8.sp)),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: gameState.size == 0
+            ? [
+                Text(
+                  'No game in progress',
+                  style: Theme.of(context).textTheme.titleMedium,
+                  textAlign: TextAlign.center,
+                ),
+              ]
+            : [
+                Text(
+                  'Current Game',
+                  style: Theme.of(context).textTheme.titleMedium,
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(
+                  height: 12.sp,
+                ),
+
+                // game progress
+                BlocBuilder<GameBoardCubit, BoardModel>(
+                  builder: (context, state) {
+                    return LinearProgressIndicator(
+                      minHeight: 12.sp,
+                      value: (state.size / Constants.numberOfQueens),
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Theme.of(context).colorScheme.primary.withOpacity(.8),
+                      ),
+                      backgroundColor: Theme.of(context)
+                          .colorScheme
+                          .background
+                          .withOpacity(.4),
+                    );
+                  },
+                ),
+                SizedBox(
+                  height: 12.sp,
+                ),
+                // number of queens placed
+                Text('Queens placed: ${gameState.size}',
+                    style: Theme.of(context).textTheme.titleMedium),
+                SizedBox(
+                  height: 12.sp,
+                ),
+                // continue game button
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withOpacity(.8),
+                      ),
+                      onPressed: () {
+                        context.goNamed(ChessBoardScreen.routeName);
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(
+                            Icons.play_arrow_rounded,
+                            size: 18.sp,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                          Text(
+                            "Continue",
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium!
+                                .copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
       ),
     );
   }

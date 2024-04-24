@@ -48,7 +48,7 @@ class QueenInventoryComponent extends StatelessWidget {
             else
               Flexible(
                 child: Text(
-                  "👑 at row:${gameBoardState.attackingQueenPosition!["row"]}, column:${gameBoardState.attackingQueenPosition!["col"]} is attacking poor 👸🏼. You can't place more queens. To continue, make sure no Queens👸🏼 are attacked on the board.😊",
+                  "O no!! our 👑 queen at row ${gameBoardState.attackingQueenPosition?['row']} col ${gameBoardState.attackingQueenPosition?['col']} is under attack. Please 🙏🏾 change her to safety continue. You can't move the attacker 😭.",
                   softWrap: true,
                   overflow: TextOverflow.clip,
                 ),

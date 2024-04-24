@@ -9,7 +9,7 @@ class DraggableQueenComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Draggable<DragTargetModel>(
       data: dragTargetModel,
-      feedback: const QueenComponent(size: 26),
+      feedback: const QueenComponent(size: 52),
       childWhenDragging: QueenComponent(
         colorFilter: ColorFilter.mode(
             Theme.of(context).colorScheme.onBackground.withAlpha(100),

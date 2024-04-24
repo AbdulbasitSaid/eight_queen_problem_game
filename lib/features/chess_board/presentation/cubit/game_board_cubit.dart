@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:eight_queen_problem_game/core/constants.dart';
 import 'package:eight_queen_problem_game/features/chess_board/data/models/board_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -64,6 +66,13 @@ class GameBoardCubit extends Cubit<BoardModel> {
     required int newCol,
   }) {
     if (state.board[newRow][newCol] == 1) {
+      return;
+    }
+    print('Moving queen from $row, $col to $newRow, $newCol');
+    // Remove the queen from the current position is not same as attacking queen
+    if (state.isSafe == false &&
+        row != state.attackingQueenPosition!['row'] &&
+        col != state.attackingQueenPosition!['col']) {
       return;
     }
     removeQueen(row: row, col: col);

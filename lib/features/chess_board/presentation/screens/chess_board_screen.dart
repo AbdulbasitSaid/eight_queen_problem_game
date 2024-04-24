@@ -6,9 +6,11 @@ import 'package:eight_queen_problem_game/features/chess_board/presentation/scree
 import 'package:eight_queen_problem_game/features/chess_board/presentation/screens/components/chess_board_component.dart';
 import 'package:eight_queen_problem_game/features/chess_board/presentation/screens/components/notification_area_component.dart';
 import 'package:eight_queen_problem_game/features/chess_board/presentation/screens/components/queen_inventory_component.dart';
+import 'package:eight_queen_problem_game/features/home/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class ChessBoardScreen extends StatefulWidget {
   const ChessBoardScreen({super.key});
@@ -174,7 +176,7 @@ class _ChessBoardScreenState extends State<ChessBoardScreen> {
                                         .withOpacity(.8),
                                   ),
                                   onPressed: () {
-                                    Navigator.of(context).pop();
+                                    context.goNamed(HomeScreen.routeName);
                                   },
                                   child: Row(
                                     mainAxisAlignment:

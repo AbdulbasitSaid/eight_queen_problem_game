@@ -1,5 +1,4 @@
 import 'package:eight_queen_problem_game/features/chess_board/data/models/board_model.dart';
-import 'package:eight_queen_problem_game/features/chess_board/data/models/safe_check_model.dart';
 import 'package:eight_queen_problem_game/features/chess_board/presentation/screens/components/draggable_queen_component.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +16,10 @@ class PlayingStateCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool checkIfSafe = gameBoardState.isSafe != true &&
+        gameBoardState.attackingQueenPosition != null &&
+        gameBoardState.attackingQueenPosition!['row'] == row &&
+        gameBoardState.attackingQueenPosition!['col'] == col;
     return Container(
       decoration: BoxDecoration(
         backgroundBlendMode: BlendMode.overlay,
@@ -25,12 +28,7 @@ class PlayingStateCell extends StatelessWidget {
         //
         color:
             // show red color only on the attacking queens positions
-            gameBoardState.isSafe != true &&
-                    gameBoardState.attackingQueenPosition != null &&
-                    gameBoardState.attackingQueenPosition!['row'] == row &&
-                    gameBoardState.attackingQueenPosition!['col'] == col
-                ? Colors.red
-                : defaultColors(context),
+            checkIfSafe ? Colors.red : defaultColors(context),
       ),
       child: gameBoardState.board[row][col] == 1
           ? DraggableQueenComponent(
