@@ -94,27 +94,42 @@ class GameBoardCubit extends Cubit<BoardModel> {
     );
   }
 
-  void checkIsSave({
+  // void checkIsSave({
+  //   required int row,
+  //   required int col,
+  // }) {
+  //   final List<List<int>> board = state.board;
+
+  //   final updatedState = state.copyWith(
+  //     isSafe: _isSafe(board, row, col).isSafe,
+  //     attackingQueenPosition: _isSafe(board, row, col).attackingQueenPosition,
+  //   );
+  //   emit(
+  //     BoardModel(
+  //       board: board,
+  //       remainingQueensCount: state.remainingQueensCount,
+  //       size: state.size,
+  //       isSafe: updatedState.isSafe,
+  //       attackingQueenPosition: updatedState.attackingQueenPosition,
+  //       isGameCompleted: state.isGameCompleted,
+  //     ),
+  //   );
+  // }
+   void checkIsSafe({
     required int row,
     required int col,
   }) {
     final List<List<int>> board = state.board;
+    var safetyCheck = _isSafe(board, row, col); // Call once and use the result
 
     final updatedState = state.copyWith(
-      isSafe: _isSafe(board, row, col).isSafe,
-      attackingQueenPosition: _isSafe(board, row, col).attackingQueenPosition,
+      isSafe: safetyCheck.isSafe,
+      attackingQueenPosition: safetyCheck.attackingQueenPosition,
     );
-    emit(
-      BoardModel(
-        board: board,
-        remainingQueensCount: state.remainingQueensCount,
-        size: state.size,
-        isSafe: updatedState.isSafe,
-        attackingQueenPosition: updatedState.attackingQueenPosition,
-        isGameCompleted: state.isGameCompleted,
-      ),
-    );
+
+    emit(updatedState);
   }
+
 
   void removeQueen({
     required int row,
@@ -136,7 +151,7 @@ class GameBoardCubit extends Cubit<BoardModel> {
         isGameCompleted: false,
       ),
     );
-    checkIsSave(row: row, col: col);
+    checkIsSafe( row: row, col: col);
   }
 
   SafeCheckModel _isSafe(List<List<int>> board, int row, int col) {
