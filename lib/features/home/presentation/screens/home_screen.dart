@@ -117,7 +117,18 @@ class StartNewGameCard extends StatelessWidget {
                             .withOpacity(.8),
                       ),
                       onPressed: () {
-                        context.goNamed(ChessBoardScreen.routeName);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'This feature is not yet implemented',
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            backgroundColor: Theme.of(context)
+                                .colorScheme
+                                .error
+                                .withOpacity(.8),
+                          ),
+                        );
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
