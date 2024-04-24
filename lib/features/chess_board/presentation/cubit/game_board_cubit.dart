@@ -70,7 +70,8 @@ class GameBoardCubit extends Cubit<BoardModel> {
     if (state.board[newRow][newCol] == 1 || state.board[row][col] == 0) {
       return;
     }
-    if (state.isSafe == false && row != state.attackingQueenPosition!['row'] ||
+    if (state.isSafe == false &&
+        row != state.attackingQueenPosition!['row'] &&
         col != state.attackingQueenPosition!['col']) {
       return;
     }
