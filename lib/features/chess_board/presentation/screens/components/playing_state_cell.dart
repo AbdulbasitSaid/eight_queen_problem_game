@@ -1,4 +1,5 @@
 import 'package:eight_queen_problem_game/features/chess_board/data/models/board_model.dart';
+import 'package:eight_queen_problem_game/features/chess_board/data/models/safe_check_model.dart';
 import 'package:eight_queen_problem_game/features/chess_board/presentation/screens/components/draggable_queen_component.dart';
 import 'package:flutter/material.dart';
 
@@ -21,13 +22,15 @@ class PlayingStateCell extends StatelessWidget {
         backgroundBlendMode: BlendMode.overlay,
         border: Border.all(
             color: Theme.of(context).colorScheme.secondary.withOpacity(.6)),
-        color: gameBoardState.attackingQueenPosition == null ||
-                gameBoardState.attackingQueenPosition!['row'] != row ||
-                gameBoardState.attackingQueenPosition!['col'] != col
-            ? (row + col) % 2 == 0
-                ? Theme.of(context).colorScheme.secondary.withOpacity(.6)
-                : Theme.of(context).colorScheme.background.withOpacity(.6)
-            : Colors.red,
+        //
+        color:
+            // show red color only on the attacking queens positions
+            gameBoardState.attackingQueenPositions.any((element) =>
+                    element.attackingQueenPosition?['row'] == row &&
+                    element.attackingQueenPosition?['col'] == col &&
+                    !gameBoardState.isSafe)
+                ? Colors.red
+                : defaultColors(context),
       ),
       child: gameBoardState.board[row][col] == 1
           ? DraggableQueenComponent(
@@ -41,5 +44,11 @@ class PlayingStateCell extends StatelessWidget {
             )
           : null,
     );
+  }
+
+  Color defaultColors(BuildContext context) {
+    return (row + col) % 2 == 0
+        ? Theme.of(context).colorScheme.secondary.withOpacity(.6)
+        : Theme.of(context).colorScheme.background.withOpacity(.6);
   }
 }
