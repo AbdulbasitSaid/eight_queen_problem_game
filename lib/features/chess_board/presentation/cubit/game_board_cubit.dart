@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:eight_queen_problem_game/core/constants.dart';
 import 'package:eight_queen_problem_game/features/chess_board/data/models/board_model.dart';
@@ -181,5 +182,36 @@ class GameBoardCubit extends Cubit<BoardModel> {
 
     // If no queens are attacking the current position, it is safe
     return const SafeCheckModel(isSafe: true, attackingQueenPosition: null);
+  }
+
+  // generate solution
+  List<List<BoardModel>> _solveQueenProblem(int row, List<List<int>> board) {
+    List<List<BoardModel>> solutions = [];
+    if (row == Constants.numberOfQueens) {
+      solutions.add([
+        BoardModel(
+          board: board,
+          remainingQueensCount: 0,
+          size: Constants.numberOfQueens,
+          isSafe: true,
+          isGameCompleted: true,
+        )
+      ]);
+      return solutions;
+    }
+
+    for (int col = 0; col < Constants.numberOfQueens; col++) {
+      if (_isSafe(board, row, col).isSafe) {
+        board[row][col] = 1;
+        solutions.addAll(_solveQueenProblem(row + 1, board));
+        board[row][col] = 0;
+      }
+    }
+    return solutions;
+  }
+
+  BoardModel _randomlyPickASolution(List<List<BoardModel>> solutions) {
+    var randomIndex = Random().nextInt(solutions.length);
+    return solutions[randomIndex][0];
   }
 }
