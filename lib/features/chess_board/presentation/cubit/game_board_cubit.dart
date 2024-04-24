@@ -13,7 +13,7 @@ class GameBoardCubit extends Cubit<BoardModel> {
               (_) => List.filled(Constants.numberOfQueens, 0),
             ),
             remainingQueensCount: Constants.numberOfQueens,
-            size: Constants.numberOfQueens,
+            size: 0,
             isSafe: true,
             isGameCompleted: false,
           ),
@@ -24,22 +24,22 @@ class GameBoardCubit extends Cubit<BoardModel> {
     required int col,
   }) {
     final List<List<int>> board = state.board;
-    final isMoveSafe = state.copyWith(
-      isSafe: _isSafe(board, row, col).isSafe,
-      attackingQueenPosition: _isSafe(board, row, col).attackingQueenPosition,
+    final updatedState = state.copyWith(
+      size: state.size + 1,
     );
     if (board[row][col] == 1) {
       return;
     }
-    board[row][col] = 1;
+    checkIsSave(row: row, col: col);
 
+    board[row][col] = 1;
     emit(
       BoardModel(
           board: board,
           remainingQueensCount: state.remainingQueensCount - 1,
-          size: Constants.numberOfQueens,
-          isSafe: isMoveSafe.isSafe,
-          attackingQueenPosition: isMoveSafe.attackingQueenPosition,
+          size: updatedState.size,
+          isSafe: state.isSafe,
+          attackingQueenPosition: state.attackingQueenPosition,
           isGameCompleted: state.isGameCompleted),
     );
 
@@ -48,7 +48,7 @@ class GameBoardCubit extends Cubit<BoardModel> {
         BoardModel(
           board: board,
           remainingQueensCount: state.remainingQueensCount,
-          size: Constants.numberOfQueens,
+          size: updatedState.size,
           isSafe: state.isSafe,
           attackingQueenPosition: state.attackingQueenPosition,
           isGameCompleted: true,
@@ -78,9 +78,31 @@ class GameBoardCubit extends Cubit<BoardModel> {
           (_) => List.filled(Constants.numberOfQueens, 0),
         ),
         remainingQueensCount: 8,
-        size: Constants.numberOfQueens,
+        size: 0,
         isSafe: true,
         isGameCompleted: false,
+      ),
+    );
+  }
+
+  void checkIsSave({
+    required int row,
+    required int col,
+  }) {
+    final List<List<int>> board = state.board;
+
+    final updatedState = state.copyWith(
+      isSafe: _isSafe(board, row, col).isSafe,
+      attackingQueenPosition: _isSafe(board, row, col).attackingQueenPosition,
+    );
+    emit(
+      BoardModel(
+        board: board,
+        remainingQueensCount: state.remainingQueensCount,
+        size: state.size,
+        isSafe: updatedState.isSafe,
+        attackingQueenPosition: updatedState.attackingQueenPosition,
+        isGameCompleted: state.isGameCompleted,
       ),
     );
   }
@@ -91,96 +113,63 @@ class GameBoardCubit extends Cubit<BoardModel> {
   }) {
     final List<List<int>> board = state.board;
     board[row][col] = 0;
+    final updatedState = state.copyWith(
+      remainingQueensCount: state.remainingQueensCount + 1,
+      size: state.size - 1,
+    );
+
     emit(
       BoardModel(
         board: board,
-        remainingQueensCount: state.remainingQueensCount + 1,
-        size: Constants.numberOfQueens,
-        isSafe: true,
+        remainingQueensCount: updatedState.remainingQueensCount,
+        size: updatedState.size,
+        isSafe: state.isSafe,
         isGameCompleted: false,
       ),
     );
+    checkIsSave(row: row, col: col);
   }
 
   SafeCheckModel _isSafe(List<List<int>> board, int row, int col) {
-    for (int i = 0; i < col; i++) {
-      if (board[row][i] == 1) {
-        return SafeCheckModel(isSafe: false, attackingQueenPosition: {
-          'row': row,
-          'col': i,
-        });
+    // Check horizontally
+    for (int i = 0; i < Constants.numberOfQueens; i++) {
+      if (i != col && board[row][i] == 1) {
+        return SafeCheckModel(
+            isSafe: false, attackingQueenPosition: {'row': row, 'col': i});
       }
     }
 
-    for (int i = col; i < Constants.numberOfQueens; i++) {
-      if (board[row][i] == 1) {
-        return SafeCheckModel(isSafe: false, attackingQueenPosition: {
-          'row': row,
-          'col': i,
-        });
+    // Check vertically
+    for (int i = 0; i < Constants.numberOfQueens; i++) {
+      if (i != row && board[i][col] == 1) {
+        return SafeCheckModel(
+            isSafe: false, attackingQueenPosition: {'row': i, 'col': col});
       }
     }
 
-    for (int i = 0; i < row; i++) {
-      if (board[i][col] == 1) {
-        return SafeCheckModel(isSafe: false, attackingQueenPosition: {
-          'row': i,
-          'col': col,
-        });
+    // Check diagonals
+    for (int i = 1; i < Constants.numberOfQueens; i++) {
+      List<int> directions = [
+        -1,
+        1
+      ]; // This represents the direction vector for diagonals
+      for (int d in directions) {
+        for (int j in directions) {
+          int x = row + i * d;
+          int y = col + i * j;
+          if (x >= 0 &&
+              x < Constants.numberOfQueens &&
+              y >= 0 &&
+              y < Constants.numberOfQueens &&
+              board[x][y] == 1) {
+            return SafeCheckModel(
+                isSafe: false, attackingQueenPosition: {'row': x, 'col': y});
+          }
+        }
       }
     }
 
-    for (int i = row; i < Constants.numberOfQueens; i++) {
-      if (board[i][col] == 1) {
-        return SafeCheckModel(isSafe: false, attackingQueenPosition: {
-          'row': i,
-          'col': col,
-        });
-      }
-    }
-
-    for (int i = row, j = col; i >= 0 && j >= 0; i--, j--) {
-      if (board[i][j] == 1) {
-        return SafeCheckModel(isSafe: false, attackingQueenPosition: {
-          'row': i,
-          'col': j,
-        });
-      }
-    }
-
-    for (int i = row, j = col;
-        i < Constants.numberOfQueens && j < Constants.numberOfQueens;
-        i++, j++) {
-      if (board[i][j] == 1) {
-        return SafeCheckModel(isSafe: false, attackingQueenPosition: {
-          'row': i,
-          'col': j,
-        });
-      }
-    }
-
-    for (int i = row, j = col;
-        i >= 0 && j < Constants.numberOfQueens;
-        i--, j++) {
-      if (board[i][j] == 1) {
-        return SafeCheckModel(isSafe: false, attackingQueenPosition: {
-          'row': i,
-          'col': j,
-        });
-      }
-    }
-
-    for (int i = row, j = col;
-        i < Constants.numberOfQueens && j >= 0;
-        i++, j--) {
-      if (board[i][j] == 1) {
-        return SafeCheckModel(isSafe: false, attackingQueenPosition: {
-          'row': i,
-          'col': j,
-        });
-      }
-    }
-
+    // If no queens are attacking the current position, it is safe
     return const SafeCheckModel(isSafe: true, attackingQueenPosition: null);
   }
 }

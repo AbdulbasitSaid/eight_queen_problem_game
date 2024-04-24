@@ -20,7 +20,6 @@ class QueenInventoryComponent extends StatelessWidget {
           gameBoardState.attackingQueenPosition != null) {
         return;
       }
-
       context.read<GameBoardCubit>().removeQueen(
           row: data.data.previousPosition!['row']!,
           col: data.data.previousPosition!['col']!);
@@ -36,7 +35,8 @@ class QueenInventoryComponent extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             // if gameBoardState.isSafe return a DraggableQueenComponent else return a Container
-            if (gameBoardState.isSafe)
+            if (gameBoardState.isSafe ||
+                gameBoardState.attackingQueenPosition == null)
               ...List.generate(
                 gameBoardState.remainingQueensCount,
                 (index) => const DraggableQueenComponent(

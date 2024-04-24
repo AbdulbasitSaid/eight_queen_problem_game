@@ -25,10 +25,10 @@ class PlayingStateCell extends StatelessWidget {
         //
         color:
             // show red color only on the attacking queens positions
-            gameBoardState.attackingQueenPositions.any((element) =>
-                    element.attackingQueenPosition?['row'] == row &&
-                    element.attackingQueenPosition?['col'] == col &&
-                    !gameBoardState.isSafe)
+            gameBoardState.isSafe != true &&
+                    gameBoardState.attackingQueenPosition != null &&
+                    gameBoardState.attackingQueenPosition!['row'] == row &&
+                    gameBoardState.attackingQueenPosition!['col'] == col
                 ? Colors.red
                 : defaultColors(context),
       ),
