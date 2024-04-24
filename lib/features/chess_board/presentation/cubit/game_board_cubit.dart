@@ -32,9 +32,11 @@ class GameBoardCubit extends Cubit<BoardModel> {
     if (board[row][col] == 1) {
       return;
     }
+
     checkIsSafe(row: row, col: col);
 
     board[row][col] = 1;
+
     emit(
       BoardModel(
           board: board,
@@ -66,7 +68,12 @@ class GameBoardCubit extends Cubit<BoardModel> {
     required int newCol,
   }) {
     if (state.board[newRow][newCol] == 1 || state.board[row][col] == 0) {
-      return; // Ensuring the operation is valid
+      return;
+    }
+    if (state.isSafe == false &&
+        row != state.attackingQueenPosition!['row'] &&
+        col != state.attackingQueenPosition!['col']) {
+      return;
     }
     removeQueen(row: row, col: col);
     placeQueenOnBoard(row: newRow, col: newCol);
