@@ -20,6 +20,14 @@ This project uses Flutter to create a user-friendly mobile app that challenges p
 
 Ensure you have Flutter installed on your machine. For installation instructions, see the [official Flutter documentation](https://flutter.dev/docs/get-started/install).
 
+## My approach
+
+The 8-queen problem is a popular algorithm challenge that I tackled using the backtracking algorithm. I implemented the algorithm in the game_board_cubit.dart file.
+
+To solve the N-queen problem, I initially created an algorithm and utilized a stateful widget to produce a proof of concept. However, I later removed it and transferred the logic to a cubit to manage the gameplay. I also developed the user interface with theming and a drag-and-drop implementation to enhance the user experience and make the app feel more like a game. Despite this, I spent the majority of my time concentrating on the UI.
+
+Unfortunately, I wasn't able to complete a few things on time, such as writing tests (widget, bloc, integration, unit), achieving 80% code coverage, implementing game hints, starting the game with one to four randomly placed queens, adding animations and transitions, game sound, and a dark mode toggle, create web and desktop versions.
+
 ### Installation
 
 Follow these steps to get the app running on your local machine:
