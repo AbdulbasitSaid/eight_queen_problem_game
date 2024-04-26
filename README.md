@@ -59,18 +59,18 @@ Follow these steps to get the app running on your local machine:
 
     this above command will install all packages
 
-4. Run the build runner to generate need code.
+4. Run the build runner to generate the needed code.
 
-     if on mac on linux and can use Makefiles
+     if on Mac on Linux and can use Makefiles
 
      ```bash
     make build_runner
      ```
 
-     else run
-        ```bash
-        dart run build_runner watch --delete-conflicting-outputs
-        ```
+    else run
+    ```bash
+           dart run build_runner watch --delete-conflicting-outputs
+    ```
     The above should generate your code.
 
 ### Run the App
@@ -97,20 +97,20 @@ To run the app in a development environment, follow these steps:
 
 - **Pre-placed Queens**: Optionally, start the game with one or more queens already placed on the board in positions that still allow for a valid solution to be found. This variation challenges the player to complete the puzzle from a unique starting configuration.
 
-### what did I spend must time on?
+### What did I spend most time on?
 
-I spent must time on trying to make the good UI
+I spent most time trying to make a good UI
 
 ### How hard was it to solve the challenge?
 
 The challenge was above average difficulty. It is challenging enough both too difficult.
 
-### Giving more time, things I will like to improve
+### Giving more time, things I would like to improve
 
 - Code quality.
 - Test coverage.
 - score system.
-- add a leader board.
+- add a leaderboard.
 - authentication.
 - improved animations.
 - add game sound.
